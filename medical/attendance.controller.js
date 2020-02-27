@@ -7,7 +7,7 @@ Object.toparams = function ObjecttoParams(obj) {
     return p.join("&");
 };
 
-var mainApp = angular.module("mainApp",[])
+var app=angular.module('mainApp', [])
     .controller("MainController", ["$scope", "$http",
         function AttendanceController($scope, $http)
 {

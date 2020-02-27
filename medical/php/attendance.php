@@ -9,9 +9,10 @@ require_once 'dbcontroller.php';
 $connection = new DBController();
 $data = array();
 
-
-$sql = "SELECT attendanceID,fkStudentID, date FROM tblattendance";
+$sql = "SELECT studentID , fname, lname FROM tblstudent";
 $data = $connection->runSelectQueryArray($sql);
 
 echo json_encode($data);
+
+
 ?>
