@@ -16,7 +16,7 @@ var app=angular.module('mainApp', [])
     {
         $http({
             method: "POST",
-            url: "./php/attendance.php",
+            url: "./php/teacher_getAttendance.php",
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
         }).then(function (result) {
                 $scope.list = result.data;
