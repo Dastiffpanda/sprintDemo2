@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Minerva</title>
+
+    <!-- Used with Bootstrap 4 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+
+    <!-- JQuery needed for  Bootstrap 4 and Angular -->
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="attendance.controller.js"></script>
+
+    <!-- Popper needed for Bootstrap 4 - Bootstrap 4 requires UMD version of popper.js -->
+    <script src="lib/popper.js/dist/umd/popper.js"></script>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <!-- Angular 1.7.5 -->
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="lib/angular-route/angular-route.min.js"></script>
+
+
+    <!-- iconic icons -->
+    <link href="lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/site.css">
+
+    <script src="main.config.js"></script>
+    <script src="attendance.module.js"></script>
+
+    <script src="medical-immunization/medical-immunization.module.js"></script>
+    <script src="medical-immunization/medical-immunization.component.js"></script>
+    <script src="medical-substance-abuse/substance-abuse.module.js"></script>
+    <script src="medical-substance-abuse/substance-abuse.component.js"></script>
+    <script src="medical-allergies/allergies.module.js"></script>
+    <script src="medical-allergies/allergies.component.js"></script>
+    <script src="medical-medication/medication.module.js"></script>
+    <script src="medical-medication/medication.component.js"></script>
+    <script src="medical-insurance/insurance.module.js"></script>
+    <script src="medical-insurance/insurance.component.js"></script>
+    <script src="medical.module.js"></script>
+
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="modules/search/search.module.js"></script>
+    <script src="modules/search/find-cadet/find-cadet.module.js"></script>
+    <script src="modules/search/find-cadet/find-cadet.component.js"></script>
+    <script src="modules/search/find-cadet/find-cadet-panel.component.js"></script>
+    <script src="modules/search/find-applicant/find-applicant.module.js"></script>
+    <script src="modules/search/find-applicant/find-applicant.component.js"></script>
+    <script src="modules/search/find-applicant/find-applicant-panel.component.js"></script>
+    <script src="medical.controller.js"></script>
+    <script src="attendance.controller.js"></script>
+</head>
+<style>
+    body{
+        font-size: 14px;
+    }
+
+    .round {
+        position: relative;
+    }
+
+    .round label {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 20px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 20px;
+    }
+
+    .round label:after {
+        border: 2px solid #fff;
+        border-top: none;
+        border-right: none;
+        content: "";
+        height: 6px;
+        left: 7px;
+        opacity: 0;
+        position: absolute;
+        top: 8px;
+        transform: rotate(-45deg);
+        width: 12px;
+    }
+
+    .round input[type="checkbox"] {
+        visibility: hidden;
+    }
+
+    .round input[type="checkbox"]:checked + label {
+        background-color: #66bb6a;
+        border-color: #66bb6a;
+    }
+
+    .round input[type="checkbox"]:checked + label:after {
+        opacity: 1;
+    }
+    h2
+    {
+        font-size:23px;
+    }
+
+</style>
+<body>
+<h1><img src="images/georgiayouth.jpg" width="90" height="90"></h1>
+<h5></h5>
+<div ng-app="medical" ng-controller="MedicalController">
+    <div id="page-content-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./medical.index.view.html">Education <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./medical.attendance.view.html">Attendance<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./medical.grades.view.html">Grades <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="./medical.attendance.view.html">Attendance</a>
+                            <a class="dropdown-item" href="./medical.grades.view.html">Grades</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <md-content ng-controller="MedicalController as ctrl" layout-padding="" ng-cloak="" class="datepickerdemoBasicUsage" ng-app="medical">
+        <div layout-gt-xs="row">
+            <div flex-gt-xs="">
+                <h4>Standard date-picker</h4>
+                <md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date"></md-datepicker>
+            </div>
+        </div>
+    </md-content>
+
+    <div class="container-fluid">
+        <div class="form-group">
+            <label><b>Date</b></label>
+            <input type="date" placeholder="Enter Date" name="meetingDate"
+                   ng-model="meetingDate" required
+                   ng-change="loadDaily()">
+            <button type="button" class="btn btn-success"
+                    style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                    data-toggle="modal" data-target="#findCadetModal">
+                Find A Cadet
+            </button>
+            <button type="button" class="btn btn-success"
+                    style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                    data-toggle="modal" data-target="#findCourseModule">
+                Find A Course
+            </button>
+        </div>
+    </div>
+    <center> <h2> {{nextpager}} {{nextpagerAdditonal}} {{date}} </h2></center>
+    <div ng-repeat="x in attendance track by $index">
+        <center><h2> {{x.AttendanceDate}} </h2></center>
+    </div>
+        <!-- The Modal -->
+        <div class="modal fade" id="findCourseModule">
+            <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+            <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Select the course you wish to find.  </h4>
+                    </div>
+
+                    <table style="width:900px; float:left"; class="table minerva-table  table table-striped">
+                        <thead>
+                        <th>  </th>
+                        <th> Course ID </th>
+                        <th> Course Name </th>
+                        <th> Teacher </th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="x in courselist">
+                            <td>  <button type="submit" class="btn btn-success" style="background: linear-gradient(to bottom, #1c9e2d, #067613);" ng-click="NextCourse(x)" data-dismiss="modal">
+                                Select Course
+                            </button> </td>
+                            <td> {{x.CourseID }}</td>
+                            <td> {{x.CourseSubject}} </td>
+                            <td> {{x.TeacherName}} </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="findCadetModal">
+        <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+        <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Cadets</h4>
+                    <span>
+                <button type="button" class="btn btn-success"
+                        style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                        ng-click="$ctrl.saveSelection()"
+                        data-dismiss="modal">
+                    Save Selection
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </span>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <find-cadet></find-cadet>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success"
+                            style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                            ng-click="$ctrl.saveSelection()"
+                            data-dismiss="modal">
+                        Save Selection
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table style="width: 100%;"class="table minerva-table  table table-striped">
+                    <thead>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th ng-repeat="">Present</th>
+                    <th>Absent</th>
+                    <th>Excused</th>
+                    <th>Walked out</th>
+                    <th>Comments</th>
+                    <th>Drop? </th>
+                    </thead>
+
+                    <tr ng-repeat="x in attendance track by $index">
+                        <td> {{x.AttendanceDate}} </td>
+                        <td> {{x.PersonFN}} {{x.PersonLN}} </td>
+                        <td> <div class="round">
+                            <input type="checkbox" id="checkbox" value="{{x.AttendanceStatus}}"/> <label for="checkbox"></label>
+                        </div> </td>
+                      <td> <div class="round">
+                          <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+                      </div> </td>
+                        <td> <div class="round">
+                            <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+                        <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>  </div> </td>
+                        <td> <div class="round">
+                            <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+                        </div> </td>
+                      <td> <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option>  <option> Enter time of Walkout </option></select>  </td>
+                    <td> <div input="text" value="{{x.AttendanceComment}}"/>
+                    </tr>
+                    </tbody>
+                </table>
+
+    <br>
+    <br>
+    <br>
+<center> <h2> Five day present report </h2> </center>
+
+    <table style="width: 100%;"class="table minerva-table  table table-striped">
+        <thead>
+        <th ng-repeat="x in attendancedates track by $index">
+            {{x.AttendanceDate}}</th>
+        </thead>
+        <tr ng-repeat="x in attendancedates track by $index">
+            <td> <div class="round">
+                <input type="checkbox" id="checkbox" value="{{x.AttendanceStatus}}"/> <label for="checkbox"></label>
+            </div> </td>
+            <td> <div class="round">
+                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+            </div> </td>
+            <td> <div class="round">
+                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+                <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>  </div> </td>
+            <td> <div class="round">
+                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
+            </div> </td>
+            <td> <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option>  <option> Enter time of Walkout </option></select>  </td>
+            <td> <div input="text" value="{{x.AttendanceComment}}"/>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+    </div>
+
+    </div>
+        </div>
+</body>
+</html>
