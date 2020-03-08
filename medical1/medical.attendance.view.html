@@ -145,37 +145,23 @@
         </nav>
     </div>
 
-    <md-content ng-controller="MedicalController as ctrl" layout-padding="" ng-cloak="" class="datepickerdemoBasicUsage" ng-app="medical">
-        <div layout-gt-xs="row">
-            <div flex-gt-xs="">
-                <h4>Standard date-picker</h4>
-                <md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date"></md-datepicker>
-            </div>
-        </div>
-    </md-content>
-
     <div class="container-fluid">
         <div class="form-group">
-            <label><b>Date</b></label>
-            <input type="date" placeholder="Enter Date" name="meetingDate"
-                   ng-model="meetingDate" required
-                   ng-change="loadDaily()">
-            <button type="button" class="btn btn-success"
-                    style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
-                    data-toggle="modal" data-target="#findCadetModal">
-                Find A Cadet
-            </button>
+            <input type="date" ng-model="newDate.AttendanceDate"/> <button type="submit" ng-click="DatePicker(newDate)"> Submit </button>
             <button type="button" class="btn btn-success"
                     style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
                     data-toggle="modal" data-target="#findCourseModule">
                 Find A Course
             </button>
+
+            <button class="btn btnEdit" ng-click="makeEditable()"
+                    ng-hide="editMode||createMode"> Edit</button>
+            <button class="btn btnCancel" ng-click="cancelUpdate()"
+                    ng-show="editMode"> Cancel</button>
         </div>
     </div>
-    <center> <h2> {{nextpager}} {{nextpagerAdditonal}} {{date}} </h2></center>
-    <div ng-repeat="x in attendance track by $index">
-        <center><h2> {{x.AttendanceDate}} </h2></center>
-    </div>
+    <center> <h2> {{nextpager}} {{nextpagerAdditonal}} </h2></center>
+
         <!-- The Modal -->
         <div class="modal fade" id="findCourseModule">
             <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
@@ -250,31 +236,44 @@
                     <thead>
                     <th>Date</th>
                     <th>Name</th>
-                    <th ng-repeat="">Present</th>
+                    <th>Present</th>
                     <th>Absent</th>
                     <th>Excused</th>
                     <th>Walked out</th>
                     <th>Comments</th>
                     <th>Drop? </th>
+                    <th colspan="3"> </th>
                     </thead>
 
                     <tr ng-repeat="x in attendance track by $index">
                         <td> {{x.AttendanceDate}} </td>
                         <td> {{x.PersonFN}} {{x.PersonLN}} </td>
                         <td> <div class="round">
-                            <input type="checkbox" id="checkbox" value="{{x.AttendanceStatus}}"/> <label for="checkbox"></label>
-                        </div> </td>
+                         <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==1"/> <label for="checkbox"></label>
+                        </div>
                       <td> <div class="round">
-                          <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-                      </div> </td>
+                        <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==2"/> <label for="checkbox"></label>
+                    </div> </td>
                         <td> <div class="round">
-                            <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-                        <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>  </div> </td>
+                            <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==3"/> <label for="checkbox"></label>
+                        </div>
+                        </td>
+                        <td>
+                        <div class="round">
+                            <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==4"/> <label for="checkbox"></label>
+                        </div>
+                            <select style="float:right" ng-disabled="!editMode"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>
+                        </td>
+                        <td>
+                            <input type="text" ng-disabled="!editMode"/>
+                        </td>
+
                         <td> <div class="round">
-                            <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-                        </div> </td>
-                      <td> <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option>  <option> Enter time of Walkout </option></select>  </td>
-                    <td> <div input="text" value="{{x.AttendanceComment}}"/>
+                            <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==5"/> <label for="checkbox"></label>
+                        </div>
+                            <select style="float:right" ng-disabled="!editMode"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option>  <option> Enter time of Walkout </option></select>  </td>
+                   <td>  <td><button class="btn btnEdit" ng-click="updateGrades(grade)" ng-show="editMode">Edit</button></td></td>
+
                     </tr>
                     </tbody>
                 </table>
@@ -283,28 +282,14 @@
     <br>
     <br>
 <center> <h2> Five day present report </h2> </center>
+    <input type="date" ng-model="newDate.AttendanceDate"/> <button type="submit" ng-click="DatePicker(newDate)"> Submit </button>
 
     <table style="width: 100%;"class="table minerva-table  table table-striped">
         <thead>
         <th ng-repeat="x in attendancedates track by $index">
             {{x.AttendanceDate}}</th>
         </thead>
-        <tr ng-repeat="x in attendancedates track by $index">
-            <td> <div class="round">
-                <input type="checkbox" id="checkbox" value="{{x.AttendanceStatus}}"/> <label for="checkbox"></label>
-            </div> </td>
-            <td> <div class="round">
-                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-            </div> </td>
-            <td> <div class="round">
-                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-                <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>  </div> </td>
-            <td> <div class="round">
-                <input type="checkbox" id="checkbox" /> <label for="checkbox"></label>
-            </div> </td>
-            <td> <select id="cars" style="float:right"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option>  <option> Enter time of Walkout </option></select>  </td>
-            <td> <div input="text" value="{{x.AttendanceComment}}"/>
-        </tr>
+
         </tbody>
     </table>
 

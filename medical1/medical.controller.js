@@ -139,6 +139,29 @@ angular.module('medical')
 
             $scope.loadCourses();
 
+            $scope.updateGrades = function updateGrades(grade)
+            {
+                var post ={};
+                post.CourseGradeID = grade.CourseGradeID;
+                post.CourseGradeDate = convertToSqlDate(grade.CourseGradeDate);
+                post.Score = grade.Score;
+                $http
+                ({
+                    method: "POST",
+                    url: "./php/teacher_updateGrades.php",
+                    data: Object.toparams(post),
+                    headers: {"Content-type": "application/x-www-form-urlencoded"}
+                }).then (function(result)
+                    {
+                        alert("Record Updated");
+                        $scope.loadGrades();
+                    },
+                    function()
+                    {
+                        alert("Error editing record");
+                    });
+            };
+
             $scope.NextPage = function NextPage(x) {
                 var post = {};
                 post.CourseID = x.CourseID;
@@ -219,6 +242,63 @@ angular.module('medical')
                     },
                     function () {
                         alert("Error getting records");
+                    });
+            };
+
+            attendancedates=[];
+            $scope.DatePicker = function DatePicker(newDate){
+
+                var post = angular.copy(newDate);
+                post.AttendanceDate = convertToSqlDate(post.AttendanceDate);
+                alert(post.AttendanceDate);
+
+                $http({
+                    method: "POST",
+                    data: Object.toparams(post),
+                    url: "./php/getAttendanceDates.php",
+                    headers: {"Content-Type": "application/x-www-form-urlencoded"}
+                }).then(function (result) {
+                        $scope.attendancedates = result.data;
+                        alert("Record is recorded!");
+                    },
+                    function () {
+                        alert("Error getting records");
+                    });
+            };
+
+            $scope.gradeList=[];
+            $scope.editMode = false;
+            $scope.createMode = false;
+            $scope.deleteList = [];
+
+            $scope.makeEditable = function makeEditable(){
+                $scope.editMode = true;
+                $scope.createMode = false;
+
+                //create a backup of data.
+                $scope.backup = angular.copy($scope.attendance);
+            };
+
+            $scope.updateGrades = function updateGrades(grade)
+            {
+                var post ={};
+                post.CourseGradeID = grade.CourseGradeID;
+                post.CourseGradeDate = convertToSqlDate(grade.CourseGradeDate);
+                post.Score = grade.Score;
+                $http
+                ({
+                    method: "POST",
+                    url: "./php/teacher_updateGrades.php",
+                    data: Object.toparams(post),
+                    headers: {"Content-type": "application/x-www-form-urlencoded"}
+                }).then (function(result)
+                    {
+                        alert("Record Updated");
+                        $scope.loadGrades();
+                    },
+                    function()
+                    {
+                        alert("Error editing record");
                     });
             };
 
