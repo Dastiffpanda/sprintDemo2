@@ -8,3 +8,6 @@ angular.module("medical",[
 ]);
 
 
+angular.module('medical', []);
+
+

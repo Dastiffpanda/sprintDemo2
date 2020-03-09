@@ -1,80 +1,6 @@
 angular.module('medical')
-    .controller('MedicalController', ['$scope', '$http','$rootScope','$window',
-        function MedicalController($scope, $http, $rootScope, $window) {
-
-            var post = {};
-            post.CourseID;
-
-            $scope.ClassDetailID = $window.localStorage.getItem("ClassDetailID");
-            $scope.classDetailIDError = true;
-
-
-            $scope.medInsurance = [
-                {
-                    "MedInsuranceID": "18",
-                    "fkClassDetailID": "22",
-                    "InsuranceType": "Medical",
-                    "PolicyNumber": "716315172",
-                    "PolicyHolderName": "Christian B. Edwards",
-                    "PolicyHolderSSN": null,
-                    "PolicyHolderRelationship": "Other",
-                    "GroupNumber": null,
-                    "PolicyExpDate": "2017-06-05",
-                    "PrimaryHCP": null,
-                    "CopayInfo": null,
-                    "InsCoName": "Amerigroup RealSolution",
-                    "InsCoAddress": null,
-                    "InsCoAddress2": null,
-                    "InsCoCity": null,
-                    "InsCoState": null,
-                    "InsCoZip": null,
-                    "InsCoPhone": null,
-                    "InsCoFax": null
-                },
-                {
-                    "MedInsuranceID": "7",
-                    "fkClassDetailID": "83",
-                    "InsuranceType": "Medical",
-                    "PolicyNumber": "IDW222236639",
-                    "PolicyHolderName": null,
-                    "PolicyHolderSSN": null,
-                    "PolicyHolderRelationship": null,
-                    "GroupNumber": "689689-010-00701",
-                    "PolicyExpDate": null,
-                    "PrimaryHCP": null,
-                    "CopayInfo": null,
-                    "InsCoName": "AETNA",
-                    "InsCoAddress": "PO BOX 14079",
-                    "InsCoAddress2": null,
-                    "InsCoCity": "LEXINGTON",
-                    "InsCoState": "KY",
-                    "InsCoZip": "40512",
-                    "InsCoPhone": "8888023862",
-                    "InsCoFax": null
-                },
-                {
-                    "MedInsuranceID": "9",
-                    "fkClassDetailID": "84",
-                    "InsuranceType": null,
-                    "PolicyNumber": "urr045611723691",
-                    "PolicyHolderName": null,
-                    "PolicyHolderSSN": null,
-                    "PolicyHolderRelationship": null,
-                    "GroupNumber": null,
-                    "PolicyExpDate": null,
-                    "PrimaryHCP": null,
-                    "CopayInfo": null,
-                    "InsCoName": "BCBS OF SC",
-                    "InsCoAddress": "PO BOX 100300",
-                    "InsCoAddress2": null,
-                    "InsCoCity": "COLUMBIA",
-                    "InsCoState": "SC",
-                    "InsCoZip": "29202",
-                    "InsCoPhone": "8003256596",
-                    "InsCoFax": null
-                }
-            ];
-
+    .controller('CourseController', ['$scope', '$http','$rootScope','$window',
+        function CourseController($scope, $http, $rootScope, $window) {
 
             $scope.collapseCards = function collapseCards() {
                 $(".collapse").collapse("hide");
@@ -122,6 +48,67 @@ angular.module('medical')
             };
             $scope.loadEducationCourses();
 
+
+            $scope.list1 = [];
+            $scope.loadCourses = function loadCourses() {
+                $http({
+                    method: "POST",
+                    url: "./php/getPeople.php",
+                    headers: {"Content-Type": "application/x-www-form-urlencoded"}
+                }).then(function (result) {
+                        $scope.list1 = result.data;
+                    },
+                    function () {
+                        alert("Error getting records");
+                    });
+            };
+
+            $scope.loadCourses();
+
+            $scope.updateGrades = function updateGrades(grade)
+            {
+                var post ={};
+                post.CourseGradeID = grade.CourseGradeID;
+                post.CourseGradeDate = convertToSqlDate(grade.CourseGradeDate);
+                post.Score = grade.Score;
+                $http
+                ({
+                    method: "POST",
+                    url: "./php/teacher_updateGrades.php",
+                    data: Object.toparams(post),
+                    headers: {"Content-type": "application/x-www-form-urlencoded"}
+                }).then (function(result)
+                    {
+                        alert("Record Updated");
+                        $scope.loadGrades();
+                    },
+                    function()
+                    {
+                        alert("Error editing record");
+                    });
+            };
+
+            $scope.NextPage = function NextPage(x) {
+                var post = {};
+                post.CourseID = x.CourseID;
+                $http
+                ({
+                    method: "POST",
+                    url: "./php/attendance_CourseSelection.php",
+                    data: Object.toparams(post),
+                    headers: {"Content-type": "application/x-www-form-urlencoded"}
+                }).then(function (result) {
+                        localStorage.setItem("Course1", post.CourseSubject);
+                        $scope.nextpager = $window.localStorage.getItem("Course1");
+                        window.location.href = './medical.attendance.view.html';
+                        $scope.NextCourse(x);
+                    },
+
+                    function () {
+                        alert("Error deleting record");
+                    });
+            };
+
             $scope.attendance=[];
             $scope.NextCourse = function NextCourse(x) {
                 var post = {};
@@ -141,23 +128,6 @@ angular.module('medical')
                         localStorage.setItem("TeacherName", post.TeacherName);
                         $scope.nextpager = $window.localStorage.getItem("CourseSubject");
                         $scope.nextpagerAdditonal = $window.localStorage.getItem("TeacherName");
-                    },
-
-                    function () {
-                        alert("Error getting record");
-                    });
-            };
-
-            $scope.excused=[];
-            $scope.NextCourse = function NextCourse(x) {
-                $http
-                ({
-                    method: "POST",
-                    url: "./php/getExcusedOptions.php",
-                    data: Object.toparams(post),
-                    headers: {"Content-type": "application/x-www-form-urlencoded"}
-                }).then(function (result) {
-                        $scope.excused = result.data;
                     },
 
                     function () {
@@ -232,7 +202,7 @@ angular.module('medical')
                 $scope.createMode = false;
 
                 //create a backup of data.
-                $scope.backup = angular.copy($scope.gradeList);
+                $scope.backup = angular.copy($scope.attendance);
             };
 
             $scope.updateGrades = function updateGrades(grade)
@@ -292,7 +262,7 @@ angular.module('medical')
                     });
             };
 
-             $scope.loadCourseforstudents();
+            $scope.loadCourseforstudents();
 
             $scope.gradeList=[];
             $scope.editMode = false;
@@ -431,7 +401,7 @@ angular.module('medical')
 
             $scope.loadGrades();
 
-    }
+        }
     ]);
 
 

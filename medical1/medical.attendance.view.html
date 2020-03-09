@@ -262,10 +262,16 @@
                         <div class="round">
                             <input type="checkbox" ng-disabled="!editMode" ng-checked="x.AttendanceStatus==4"/> <label for="checkbox"></label>
                         </div>
-                            <select style="float:right" ng-disabled="!editMode"><option> Kitchen Patrol </option> <option> Displinary Problems </option><option> Medical </option> <option> Community Service </option> </select>
+                            <select ng-repeat="x in excused" style="float:right" ng-disabled="!editMode">
+                                <option> Kitchen Patrol </option>
+                                <option> Displinary Problems </option>
+                                <option> Medical </option>
+                                <option> Community Service </option>
+                            </select>
                         </td>
                         <td>
-                            <input type="text" ng-disabled="!editMode"/>
+                            <input type="text" ng-modal="{{x.AttendanceComment}}" ng-disabled="!editMode"/>
+                            {{x.AttendanceComment}}
                         </td>
 
                         <td> <div class="round">
