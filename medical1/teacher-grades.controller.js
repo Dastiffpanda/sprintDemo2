@@ -175,9 +175,10 @@ function resetAllFields(obj) {
 }
 
 
-var app=angular.module('teacherGrades', []);
+var app=angular.module('teacher', []);
 app.controller("GradesController",
-    function($scope, $http){
+    function($scope, $http)
+    {
 
         $scope.gradeList=[];
         $scope.editMode = false;

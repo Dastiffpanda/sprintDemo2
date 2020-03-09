@@ -14,7 +14,6 @@ Object.toparams = function ObjecttoParams(obj) {
 // Converts a htmlDate formated as "Tuesday Jan 15 2019"
 // into an sqlDate  year-mm-dd
 function convertToSqlDate(htmlDate) {
-
     if (htmlDate === null) {
         return "0000-00-00";
     }

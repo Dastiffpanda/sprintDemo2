@@ -7,16 +7,16 @@ Object.toparams = function ObjecttoParams(obj) {
     return p.join("&");
 };
 
-var app=angular.module('mainApp', [])
-    .controller("MainController", ["$scope", "$http",
-        function AttendanceController($scope, $http)
+var app=angular.module('teacherGrades', [])
+    .controller("GradesController", ["$scope", "$http",
+        function GradesController($scope, $http)
 {
     $scope.cadetList=[];
-    $scope.loadAttendanceStudents= function loadAttendanceStudents()
+    $scope.loadGrades= function loadGrades()
     {
         $http({
             method: "POST",
-            url: "./php/teacher_getAttendance.php",
+            url: "./php/teacher_getGrades.php",
             headers: {"Content-Type": "application/x-www-form-urlencoded"}
         }).then(function (result) {
                 $scope.cadetList = result.data;
@@ -25,5 +25,5 @@ var app=angular.module('mainApp', [])
                 alert("Error getting records");
             });
     };
-    $scope.loadAttendanceStudents();
+    $scope.loadGrades();
 }]);

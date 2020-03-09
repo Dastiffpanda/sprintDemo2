@@ -10,7 +10,7 @@
 
     <!-- JQuery needed for  Bootstrap 4 and Angular -->
     <script src="lib/jquery/dist/jquery.js"></script>
-    <script src="teacher-attendance.controller.js"></script>
+    <script src="teacher-grades.controller.js"></script>
 
     <!-- Popper needed for Bootstrap 4 - Bootstrap 4 requires UMD version of popper.js -->
     <script src="lib/popper.js/dist/umd/popper.js"></script>
@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="css/site.css">
 
     <script src="main.config.js"></script>
-    <script src="teacher-attendance.module.js"></script>
+    <!--<script src="teacher-grades.module.js"></script> -->
 
     <script src="medical-immunization/medical-immunization.module.js"></script>
     <script src="medical-immunization/medical-immunization.component.js"></script>
@@ -55,7 +55,7 @@
     <script src="modules/search/find-applicant/find-applicant-panel.component.js"></script>
 
     <script src="medical.controller.js"></script>
-    <script src="teacher-attendance.controller.js"></script>
+    <script src="teacher-grades.controller.js"></script>
 
 </head>
 <style>
@@ -114,7 +114,7 @@
 <body>
 
 <h1>Grades Module</h1>
-<div ng-app="mainApp" ng-controller="MainController">
+<div ng-app="teacherGrades" ng-controller="GradesController">
     <div id="page-content-wrapper">
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -194,8 +194,8 @@
                 <th> Grades</th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="cadet in list">
-                    <td> {{cadet.studentID}} </td>
+                <tr ng-repeat="cadet in cadetList">
+                    <td> {{cadet.CourseID}} </td>
                     <td> {{cadet.fname}} </td>
                     <td> {{cadet.lname}} </td>
                 </tbody>
