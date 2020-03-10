@@ -13,6 +13,7 @@ angular.module("search.findCadet")
         $scope.cadetNames = [];
 
         this.saveSelection = function saveSelection() {
+            alert("Heather");
             //load data stored in temp location
             this.cadets = JSON.parse($window.localStorage.getItem("temp_cadets"));
             var i;
@@ -104,31 +105,31 @@ angular.module("search.findCadet")
                 window.location.reload();
             });
 
-          /*        //select the correct index
-                  this.chosenCadetIndex = JSON.parse($window.localStorage.getItem("chosenCadetIndex"));
+            /*        //select the correct index
+                    this.chosenCadetIndex = JSON.parse($window.localStorage.getItem("chosenCadetIndex"));
 
-                //if chosenCadetNumber = -1 then set it to the first item on the list otherwise make
-                // the first cadet the one chosen
-                this.cadetSelectionError = false;
-                  if (( this.chosenCadetIndex==null || this.chosenCadetIndex === -1) || (this.chosenCadetIndex >= this.cadets.length)){
-                      if(this.cadets.length>0)
-                      {
-                          this.selectCadet(0);
-                      }
-                      else{
-                          //invalid chosenIndex
-                          this.chosenCadetIndex=null;
-                          $window.localStorage.removeItem("chosenCadetIndex");
-                          $window.localStorage.removeItem("ClassDetailID");
-                          this.cadetSelectionError = true;
-                      }
-                  }
-                  else {
-                      this.selectCadet(this.chosenCadetIndex);
-                  }
-                  $scope.cadetNames = this.cadetNames;
-            };
-            */
+                  //if chosenCadetNumber = -1 then set it to the first item on the list otherwise make
+                  // the first cadet the one chosen
+                  this.cadetSelectionError = false;
+                    if (( this.chosenCadetIndex==null || this.chosenCadetIndex === -1) || (this.chosenCadetIndex >= this.cadets.length)){
+                        if(this.cadets.length>0)
+                        {
+                            this.selectCadet(0);
+                        }
+                        else{
+                            //invalid chosenIndex
+                            this.chosenCadetIndex=null;
+                            $window.localStorage.removeItem("chosenCadetIndex");
+                            $window.localStorage.removeItem("ClassDetailID");
+                            this.cadetSelectionError = true;
+                        }
+                    }
+                    else {
+                        this.selectCadet(this.chosenCadetIndex);
+                    }
+                    $scope.cadetNames = this.cadetNames;
+              };
+              */
 
 
             //this.loadCadetsToView();

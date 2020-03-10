@@ -7,6 +7,5 @@ angular.module("medical",[
     "medical.insurance"
 ]);
 
-angular.module("mainApp",[
-]);
+
 

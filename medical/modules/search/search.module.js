@@ -2,6 +2,6 @@
 
 angular.module('search', [
     'search.findCadet',
-    'search.findApplicant'
+    'search.findApplicant',
 
 ]);

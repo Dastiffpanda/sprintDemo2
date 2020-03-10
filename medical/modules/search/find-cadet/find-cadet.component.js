@@ -5,7 +5,7 @@
 angular.module("search.findCadet")
     .component("findCadet", {
         //url is relative to position of index.html that uses it
-        templateUrl:"modules/search/find-cadet/find-cadet.view.html",
+        templateUrl:"../../modules/search/find-cadet/find-cadet.view.html",
         controller:
                 ["$scope", "filterFilter", "$window", "$http", "$filter",
                     function FindCadetController($scope, filterFilter, $window, $http, $filter) {

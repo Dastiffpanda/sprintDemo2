@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>Minerva</title>
+
+        <!-- Used with Bootstrap 4 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+        <!-- JQuery needed for  Bootstrap 4 and Angular -->
+        <script src="../../lib/jquery/dist/jquery.js"></script>
+
+        <!-- Popper needed for Bootstrap 4 - Bootstrap 4 requires UMD version of popper.js -->
+        <script src="../../lib/popper.js/dist/umd/popper.js"></script>
+
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css">
+        <script src="../../lib/bootstrap/dist/js/bootstrap.js"></script>
+
+        <!-- Angular 1.7.5 -->
+        <script type="text/javascript" src="../../lib/angular/angular.js"></script>
+        <script type="text/javascript" src="../../lib/angular-route/angular-route.min.js"></script>
+
+        <!-- iconic icons -->
+        <link href="../../lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/site.css">
+
+        <script src="../../main.config.js"></script>
+        <!--<script src="teacher-grades.module.js"></script> -->
+
+        <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css">
+        <script src="../../lib/bootstrap/dist/js/bootstrap.js"></script>
+
+        <script src="../search/search.module.js"></script>
+        <script src="../search/find-cadet/find-cadet.module.js"></script>
+        <script src="../search/find-cadet/find-cadet.component.js"></script>
+        <script src="../search/find-cadet/find-cadet-panel.component.js"></script>
+        <script src="../search/find-applicant/find-applicant.module.js"></script>
+        <script src="../search/find-applicant/find-applicant.component.js"></script>
+        <script src="../search/find-applicant/find-applicant-panel.component.js"></script>
+        
+        <script src="teacher-grades.controller.js"> </script>
+
+    </head>
+    <style>
+        body{
+            font-size: 14px;
+        }
+
+        .round {
+            position: relative;
+        }
+
+        .round label {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 20px;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 20px;
+        }
+
+        .round label:after {
+            border: 2px solid #fff;
+            border-top: none;
+            border-right: none;
+            content: "";
+            height: 6px;
+            left: 7px;
+            opacity: 0;
+            position: absolute;
+            top: 8px;
+            transform: rotate(-45deg);
+            width: 12px;
+        }
+
+        .round input[type="checkbox"] {
+            visibility: hidden;
+        }
+
+        .round input[type="checkbox"]:checked + label {
+            background-color: #66bb6a;
+            border-color: #66bb6a;
+        }
+
+        .round input[type="checkbox"]:checked + label:after {
+            opacity: 1;
+        }
+        h2
+        {
+            font-size:23px;
+        }
+
+    </style>
+
+    <body>
+    <h1>Grades Module</h1>
+    <div ng-app="teacher" ng-controller="GradesController">
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="teacher.index.view.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="teacher-attendance.view.html">Attendance</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="./teacher-grades.view.html">Grades</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="container-fluid">
+            <div class="form-group">
+                <label><b>Date</b></label>
+                <input type="date" placeholder="Enter Date" name="meetingDate"
+                    ng-model="meetingDate" required
+                    ng-change="loadDaily()">
+                <button type="button" class="btn btn-success"
+                        style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                        data-toggle="modal" data-target="#findCadetModal">
+                    Find A Cadet</button>
+                <button type="button" class="btn btn-success"
+                        style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                        data-toggle="modal" data-target="#findCourseModule">
+                    Find A Course</button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="findCourseModule">
+            <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+            <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Select the course you wish to find.  </h4>
+                    </div>
+
+                    <table style="width:900px; float:left"; class="table minerva-table  table table-striped">
+                        <thead>
+                            <th>  </th>
+                            <th> Course ID </th>
+                            <th> Course Name </th>
+                            <th> Teacher </th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in courselist">
+                                <td>  <button type="submit" class="btn btn-success" style="background: linear-gradient(to bottom, #1c9e2d, #067613);" ng-click="NextCourse(x)" data-dismiss="modal">
+                                    Select Course</button> </td>
+                                <td> {{x.CourseID }}</td>
+                                <td> {{x.CourseSubject}} </td>
+                                <td> {{x.TeacherName}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    
+            <center><h2> Grades </h2></center>
+                <div class="row">
+
+                    <div>
+                        <table style="width: 100%;" class="table minerva-table  table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="7"> Grades <!--Contains the edit and save-->
+                                        <button class="btn btnEdit" ng-click="makeEditable()"
+                                                ng-hide="editMode||createMode"> Edit</button>
+                                        <button class="btn btnCancel" ng-click="cancelUpdate()"
+                                                ng-show="editMode"> Cancel</button>
+                                        <button class="btn btnCancel" ng-click="cancelCreate()"
+                                                ng-show="createMode"> Cancel</button>
+                                        <button class="btn btnCreate" ng-click="makeCreatable()" ng-hide="editMode||createMode"> Add New Grade</button>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Subject</th>
+                                    <th>Course#</th>
+                                    <th>Score</th>
+                                    <th colspan="3"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="grade in gradeList track by $index">
+                                    <td><input type="date" ng-disabled="!editMode" ng-model="grade.CourseGradeDate"></td>
+                                    <td> {{grade.PersonFN}} {{grade.PersonLN}} </td>
+                                    <td> {{grade.CourseSubject}}</td>
+                                    <td> {{grade.CourseNumber}}</td>
+                                    <td><input type="text" ng-disabled="!editMode" ng-model="grade.Score"></td>
+                                    <td><button class="btn btnEdit" ng-click="updateGrades(grade)" ng-show="editMode">Edit</button></td>
+                                    <td><button class="btn btnDelete" ng-click="deleteGrade(grade)" ng-show="editMode">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table ng-show="createMode"> <!--display row to enter NEW student information --->
+                            <form name "AddGrade">
+                                <td>Date:<input type="date" ng-model="newGrade.CourseGradeDate" required></td>
+                                <td>Score:<input type="text" ng-model="newGrade.Score" required></td>
+                                <td>ClassDetailID:<input type="text" ng-model="newGrade.fkClassDetailID" required></td>
+                                <td>CourseID:<input type="text" ng-model="newGrade.fkCourseID" required></td>
+                                <td><button class= "btn btnSave" ng-click="createGrade(newGrade)"
+                                            ng-disabled ="AddGrade.$invalid">Save</button></td>
+                            </form>
+                        </table>
+                    </div>
+                </div>
+        </div>
+    <!-- </div> -->
+    </body>
+</html>

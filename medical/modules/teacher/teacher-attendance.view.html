@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Minerva</title>
+
+    <!-- Used with Bootstrap 4 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+
+    <!-- JQuery needed for  Bootstrap 4 and Angular -->
+    <script src="../../lib/jquery/dist/jquery.js"></script>
+
+    <!-- Popper needed for Bootstrap 4 - Bootstrap 4 requires UMD version of popper.js -->
+    <script src="../../lib/popper.js/dist/umd/popper.js"></script>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css">
+    <script src="../../lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <!-- Angular 1.7.5 -->
+    <script type="text/javascript" src="../../lib/angular/angular.js"></script>
+    <script type="text/javascript" src="../../lib/angular-route/angular-route.min.js"></script>
+
+
+    <!-- iconic icons -->
+    <link href="../../lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/site.css">
+
+    <script src="../../main.config.js"></script>
+
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css">
+    <script src="../../lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="../search/search.module.js"></script>
+    <script src="../search/find-cadet/find-cadet.module.js"></script>
+    <script src="../search/find-cadet/find-cadet.component.js"></script>
+    <script src="../search/find-cadet/find-cadet-panel.component.js"></script>
+    <script src="../search/find-applicant/find-applicant.module.js"></script>
+    <script src="../search/find-applicant/find-applicant.component.js"></script>
+    <script src="../search/find-applicant/find-applicant-panel.component.js"></script>
+
+    <script src="teacher-attendance.controller.js"></script>
+</head>
+<style>
+    body{
+        font-size: 14px;
+    }
+
+    .round {
+        position: relative;
+    }
+
+    .round label {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 20px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 20px;
+    }
+
+    .round label:after {
+        border: 2px solid #fff;
+        border-top: none;
+        border-right: none;
+        content: "";
+        height: 6px;
+        left: 7px;
+        opacity: 0;
+        position: absolute;
+        top: 8px;
+        transform: rotate(-45deg);
+        width: 12px;
+    }
+
+    .round input[type="radio"] {
+        visibility: hidden;
+    }
+
+    .round input[type="radio"]:checked + label {
+        background-color: #66bb6a;
+        border-color: #66bb6a;
+    }
+
+    .round input[type="radio"]:checked + label:after {
+        opacity: 1;
+    }
+    h2
+    {
+        font-size:23px;
+    }
+
+</style>
+    <body>
+        <h1><img src="../../images/georgiayouth.jpg" width="90" height="90"></h1>
+        <h5></h5>
+    <div ng-app="teacher" ng-controller="AttendanceController">
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="teacher.index.view.html">Education <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="./teacher-attendance.view.html">Attendance<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="teacher-grades.view.html">Grades <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="./teacher-attendance.view.html">Attendance</a>
+                                <a class="dropdown-item" href="teacher-grades.view.html">Grades</a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="container-fluid">
+            <div class="form-group">
+                <button type="button" class="btn btn-success"
+                        style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                        data-toggle="modal" data-target="#finddateModule">
+                    Select a date and a course
+                </button>
+
+                <button type="button" class="btn btn-success"
+                        style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                        data-toggle="modal" data-target="#enternewdateModule">
+                   Add a new date
+                </button>
+
+
+                <button class="btn btnEdit" ng-click="makeEditable()"
+                        ng-hide="editMode||createMode"> Edit</button>
+                <button class="btn btnCancel" ng-click="cancelUpdate()"
+                        ng-show="editMode"> Cancel</button>
+            </div>
+        </div>
+        <center> <h2> {{nextpager}}</h2></center>
+
+            <!-- The Modal -->
+            <div class="modal fade" id="finddateModule">
+                <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+                <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title"> Enter the date you wish to find.  </h4>
+                        </div>
+                        <center>  <div class="container-fluid">
+                        <h4> Formatting: 2019-08-28 </h4>
+                        <br>
+                        <br>
+
+                            <form name="dateForm">
+                       <input type="text" id="date" ng-model="dateForm.AttendanceDate"/>
+                        <button type="submit" data-dismiss="modal" data-toggle="modal" class="btn btn-success" data-target="#findCourseModal" ng-click="DatePicker(dateForm)" style="background: linear-gradient(to bottom, #1c9e2d, #067613);"> Submit </button>
+                        </div> </center>
+                        </form>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="enternewdateModule">
+            <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+            <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Enter a new date  </h4>
+                    </div>
+                    <center>  <div class="container-fluid">
+                        <h4> Formatting: 2019-08-28 </h4>
+                        <br>
+                        <br>
+
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label><b>Date</b></label>
+                                <input type="date" placeholder="Enter Date" name="meetingDate"
+                                       ng-model="meetingDate" required
+                                       ng-change="loadDaily()">
+                                <button type="submit" data-dismiss="modal" data-toggle="modal" class="btn btn-success" ng-click="newDate(meetingDate)" style="background: linear-gradient(to bottom, #1c9e2d, #067613);"> Submit </button>
+                                <br><br>
+                            </div>
+                            <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+
+        <!-- The Modal -->
+        <div class="modal fade" id="findCourseModal">
+            <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+            <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Select the course you wish to find.  </h4>
+                    </div>
+
+                    <table style="width:900px; float:left"; class="table minerva-table  table table-striped">
+                        <thead>
+                        <th></th>
+                        <th> Course ID </th>
+                        <th> Course Name </th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="course in courseList">
+                            <td><button type="submit" data-dismiss="modal" data-toggle="modal" class="btn btn-success" style="background: linear-gradient(to bottom, #1c9e2d, #067613);" ng-click="NextCourse(course)">
+                                Select Course </button> </td>
+                            <td> {{course.CourseID }}</td>
+                            <td> {{course.CourseSubject}} </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="findCadetModal">
+            <!--Set the max-width to widen the modal to take up most of the screen  style="max-width: 1350px!important;"-->
+            <div class="modal-dialog modal-xl" style="max-width: 90%!important;" role="document">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Select Cadets</h4>
+                        <span>
+                            <button type="button" class="btn btn-success"
+                                    style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                                    ng-click="$ctrl.saveSelection()"
+                                    data-dismiss="modal">Save Selection</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </span>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <find-cadet></find-cadet>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success"
+                                style="background: linear-gradient(to bottom, #1c9e2d, #067613);"
+                                ng-click="$ctrl.saveSelection()"
+                                data-dismiss="modal">
+                            Save Selection
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table style="width: 100%;"class="table minerva-table  table table-striped">
+            <thead>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Excused</th>
+                <th>Walked out</th>
+                <th>Comments</th>
+                <th>Drop? </th>
+                <th> Excused Options </th>
+                <th colspan="3"> </th>
+            </thead>
+            <tbody>
+            <form name="editAttendance">
+            <tr ng-repeat="attendance in attendanceList track by $index">
+                <td> {{attendance.AttendanceDate}} </td>
+                <td> {{attendance.PersonFN}} {{attendance.PersonLN}} </td>
+                <td><div class="round">
+                    <input type="radio"  value = "1" name="radioGroup" ng-model="attendance.AttendanceStatus" ng-change="showSelected()"/><label for="radio1"></label>
+                    </div></td>
+                <td><div class="round">
+                    <input type="radio" ng-disabled="!editMode" value = "2" name="radioGroup" ng-model="attendance.AttendanceStatus" ng-change="showSelected()"/> <label for="radio2"></label>
+                    </div></td>
+                <td> <div class="round">
+                    <input type="radio" ng-disabled="!editMode" value ="3" name="radioGroup" ng-model="attendance.AttendanceStatus" ng-change="showSelected()"/> <label for="radio3"></label>
+                    </div></td>
+                <td><div class="round">
+                    <input type="radio" ng-disabled="!editMode" value= "4" name="radioGroup" ng-model="attendance.AttendanceStatus" ng-change="showSelected()"/> <label for="radio4"></label>
+                    </div></td>
+                <td>
+                    <input type="text" value="{{attendance.AttendanceComment}}" ng-selected="{{attendance.AttendanceComment}}" ng-disabled="!editMode"/></td>
+                <td><div class="round">
+                    <input type="radio" ng-disabled="!editMode" value="5" name="radioGroup" ng-model="attendance.AttendanceStatus" ng-change="showSelected()"/> <label for="radio5"></label>
+                    </div></td>
+                <td><input type="text" value="{{attendance.AttendanceOptions}}" ng-disabled="!editMode"/></td>
+                <td><button class="btn btnEdit" ng-click="updateAttendance(attendance)" ng-show="editMode">Edit</button></td>
+            </tr>
+            </form>
+            </tbody>
+            </form>
+        </table>
+        <br>
+        <br>
+        <br>
+        <center> <h2> Five day present report </h2> </center>
+
+        <input type="date" ng-model="newDate.AttendanceDate"/> <button type="submit" ng-click="DatePicker(newDate)"> Submit </button>
+
+        <table style="width: 100%;"class="table minerva-table  table table-striped">
+            <thead>
+                <th ng-repeat="attendance in attendanceDates track by $index">
+                    {{attendance.AttendanceDate}}</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    </body>
+</html>
